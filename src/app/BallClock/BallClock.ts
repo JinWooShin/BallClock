@@ -1,36 +1,37 @@
-import { OnInit } from "@angular/core";
+import { ClockQue } from '../ClockQue/ClockQue';
 
-export class BallClock implements OnInit {
+export class BallClock {
 
-    GLOBAL_QUE: number[];
-    initial_que: number[];
-    minQue: number[];
-    fminQue: number[];
-    hourQue: number[];
+    GLOBAL_QUE: ClockQue;;
+    minQue: ClockQue;
+    fminQue: ClockQue;
+    hourQue: ClockQue;
     days: number;
 
     constructor() {
-
+        this.init();
     }
 
-    ngOnInit() {
+    init() {
         this.days = 0;
-        this.GLOBAL_QUE = [];
-        this.initial_que = [];
-        this.minQue = [];
-        this.fminQue = [];
-        this.hourQue = [];
+        // this.initial_que = [];
+        this.minQue = new ClockQue(4);
+        this.fminQue = new ClockQue(11);
+        this.hourQue = new ClockQue(11);
     }
 
     cycleDays(balls:number) {
+        this.init();
         this.fillGlobalQue(balls);
-        this.runBall();
+        this.runBall(balls);
         return this.days;
     }
 
     clockState(balls:number, mins:number) {
+        this.init();
+
         this.fillGlobalQue(balls);
-        this.runBall(mins);
+        this.runBall(balls, mins);
         this.displayState();
     }
 
@@ -40,67 +41,59 @@ export class BallClock implements OnInit {
 
     displayState() {
         var data = {
-            Min: this.minQue,
-            FiveMin: this.fminQue,
-            Hour: this.hourQue
+            Min: this.minQue.data,
+            FiveMin: this.fminQue.data,
+            Hour: this.hourQue.data,
+            Main: this.GLOBAL_QUE.data
         }
-        return data;
+        return JSON.stringify(data);
     }
 
     private fillGlobalQue(balls:number) {
-        for (var i=1; i<balls; i++) {
-            this.GLOBAL_QUE.push(i);
-            this.initial_que.push(i);
+        this.GLOBAL_QUE = new ClockQue(balls);
+        for (var i=1; i<balls+1; i++) {
+            this.GLOBAL_QUE.que(i);
         }
     }
 
-    private runBall(min?:number) {
+    private runBall(balls, min?:number) {
+        var ball;
         do {
-            if (this.getMins()===min) {
+
+            ball = this.GLOBAL_QUE.deQue();
+
+            if (min && this.getMins()>=min) {
                 break;
             }
-            if (this.minQue.length<4) {
-                this.minQue.push(this.GLOBAL_QUE.shift());
+            if (!this.minQue.isFull()) {
+                this.minQue.que(ball);
             } else {
-                if (this.fminQue.length<11) {
-                    this.fminQue.push(this.GLOBAL_QUE.shift());
-                    this.resetAllQue(this.minQue);
+                this.resetAllQue(this.minQue);
+                if (!this.fminQue.isFull()) {
+                    this.fminQue.que(ball);
                 } else {
-                    if (this.hourQue.length<11) {
-                        this.hourQue.push(this.fminQue.shift());
-                        this.resetAllQue(this.fminQue);
+                    this.resetAllQue(this.fminQue);
+                    if (!this.hourQue.isFull()) {
+                        this.hourQue.que(ball);
                     } else {
-                        this.days++;
                         this.resetAllQue(this.hourQue);
+                        this.GLOBAL_QUE.que(ball);
+                        this.days++;
                     }
                 }
             }
-        } while (this.isEqual(this.GLOBAL_QUE, this.initial_que));
+        } while (!this.GLOBAL_QUE.isInitialOrder());
     }
 
     private getMins() {
-        var mins = this.minQue.length + this.fminQue.length*5 + this.hourQue.length*60 + this.days*12*60;
+        var mins = this.minQue.length() + this.fminQue.length()*5 + this.hourQue.length()*60 + this.days*12*60;
         return mins;
     }
 
-    private resetAllQue(que:number[]) {
-        while(que.length<0) {
-            this.GLOBAL_QUE.push(que.shift());
+    private resetAllQue(que:ClockQue) {
+        while(que.length()>0) {
+            this.GLOBAL_QUE.que(que.reverseDeQue());
         }
     }
 
-    private isEqual(que1:number[], que2:number[]) {
-        var equal = true;
-        if (que1.length !== que2.length) {
-            equal = false;
-        } else {
-            for(var i=0; i<que1.length; i++) {
-                if (que1[i] !== que2[i]) {
-                    equal = false;
-                    break;
-                }
-            }
-        }
-        return equal;
-    }
 }

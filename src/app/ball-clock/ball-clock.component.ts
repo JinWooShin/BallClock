@@ -7,24 +7,31 @@ import { BallClock } from "../BallClock/BallClock";
   styleUrls: ['./ball-clock.component.scss']
 })
 export class BallClockComponent implements OnInit {
-  clock:{days:number, mins: number}
+  clock:{nBall:string, mins: string, nBall2: string}
   ballClock: BallClock;
-  cycle: number;
+  cycle: {};
   state: {};
   constructor() { }
 
   ngOnInit() {
     this.ballClock = new BallClock();
-    this.clock = {days:0, mins:0};
+    this.cycle = {};
+    this.state = "";
+    this.clock = {nBall:"0", mins:"0", nBall2:"0"};
   }
 
   cycleCompute() {
-    this.ballClock.cycleDays(this.clock.days)
-    this.cycle = this.ballClock.getDays();
+    this.cycle = {};
+    var start = new Date().getTime();
+    this.ballClock.cycleDays(parseInt(this.clock.nBall));
+    var end = new Date().getTime();
+    var elapse = end - start;
+    this.cycle ={days: Math.floor(this.ballClock.getDays()/2), time: elapse};
   }
 
   stateCompute() {
-    this.ballClock.clockState(this.clock.days, this.clock.mins);
+    this.state = "";
+    this.ballClock.clockState(parseInt(this.clock.nBall2), parseInt(this.clock.mins));
     this.state = this.ballClock.displayState();
   }
 }
