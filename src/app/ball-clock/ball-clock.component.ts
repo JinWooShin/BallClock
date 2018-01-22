@@ -34,7 +34,7 @@ export class BallClockComponent implements OnInit {
   }
 
   stateCompute() {
-    if (!this.checkValidBall(parseInt(this.clock.nBall))) {
+    if (!this.checkValidBall(parseInt(this.clock.nBall2))) {
       alert("Valid number of balls are in the range 27 to 127");
       return;
     }

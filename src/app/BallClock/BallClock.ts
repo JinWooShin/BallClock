@@ -59,12 +59,10 @@ export class BallClock {
     private runBall(balls, min?:number) {
         var ball;
         do {
-
-            ball = this.GLOBAL_QUE.deQue();
-
             if (min && this.getMins()>=min) {
                 break;
             }
+            ball = this.GLOBAL_QUE.deQue();
             if (!this.minQue.isFull()) {
                 this.minQue.que(ball);
             } else {
