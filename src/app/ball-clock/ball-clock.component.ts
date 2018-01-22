@@ -21,6 +21,10 @@ export class BallClockComponent implements OnInit {
   }
 
   cycleCompute() {
+    if (!this.checkValidBall(parseInt(this.clock.nBall))) {
+      alert("Valid number of balls are in the range 27 to 127");
+      return;
+    }
     this.cycle = {};
     var start = new Date().getTime();
     this.ballClock.cycleDays(parseInt(this.clock.nBall));
@@ -30,8 +34,19 @@ export class BallClockComponent implements OnInit {
   }
 
   stateCompute() {
+    if (!this.checkValidBall(parseInt(this.clock.nBall))) {
+      alert("Valid number of balls are in the range 27 to 127");
+      return;
+    }
     this.state = "";
     this.ballClock.clockState(parseInt(this.clock.nBall2), parseInt(this.clock.mins));
     this.state = this.ballClock.displayState();
+  }
+
+  checkValidBall(ball:number) {
+    if (ball < 27 || ball > 127) {
+      return false;
+    }
+    return true;
   }
 }
