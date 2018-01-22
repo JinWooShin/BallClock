@@ -34,7 +34,11 @@ export class BallClock implements OnInit {
         this.displayState();
     }
 
-    private displayState() {
+    getDays() {
+        return this.days;
+    }
+
+    displayState() {
         var data = {
             Min: this.minQue,
             FiveMin: this.fminQue,
