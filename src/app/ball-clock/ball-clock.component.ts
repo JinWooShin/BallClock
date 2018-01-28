@@ -6,8 +6,9 @@ import { BallClock } from "../BallClock/BallClock";
   templateUrl: './ball-clock.component.html',
   styleUrls: ['./ball-clock.component.scss']
 })
+
 export class BallClockComponent implements OnInit {
-  clock:{nBall:string, mins: string, nBall2: string}
+  clock:{nBall:number, mins: number, nBall2: number}
   ballClock: BallClock;
   cycle: {};
   state: {};
@@ -16,31 +17,27 @@ export class BallClockComponent implements OnInit {
   ngOnInit() {
     this.ballClock = new BallClock();
     this.cycle = {};
-    this.state = "";
-    this.clock = {nBall:"0", mins:"0", nBall2:"0"};
+    this.state = {};
+    this.clock = {nBall: 27, mins: 0, nBall2: 27};
   }
 
   cycleCompute() {
-    if (!this.checkValidBall(parseInt(this.clock.nBall))) {
-      alert("Valid number of balls are in the range 27 to 127");
-      return;
-    }
-    this.cycle = {};
     var start = new Date().getTime();
-    this.ballClock.cycleDays(parseInt(this.clock.nBall));
+    this.ballClock.runBall(this.clock.nBall);
     var end = new Date().getTime();
-    var elapse = end - start;
-    this.cycle ={days: Math.floor(this.ballClock.getDays()/2), time: elapse};
+
+    var result = this.ballClock.getDays();
+    this.cycle = {
+      days: Math.floor(result.days/2), 
+      time: end - start,
+      balls: result.balls
+    };
   }
 
   stateCompute() {
-    if (!this.checkValidBall(parseInt(this.clock.nBall2))) {
-      alert("Valid number of balls are in the range 27 to 127");
-      return;
-    }
-    this.state = "";
-    this.ballClock.clockState(parseInt(this.clock.nBall2), parseInt(this.clock.mins));
-    this.state = this.ballClock.displayState();
+    this.ballClock.runBall(this.clock.nBall2, this.clock.mins);
+
+    this.state = this.ballClock.getCurrentState();
   }
 
   checkValidBall(ball:number) {

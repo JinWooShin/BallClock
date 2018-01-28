@@ -21,14 +21,14 @@ export class ClockQue {
 
     deQue() {
         if (this.data.length===0) {
-            throw new Error("empty que");
+            throw new Error("que Empty");
         }
         return this.data.shift();
     }
 
     reverseDeQue() {
         if (this.data.length===0) {
-            throw new Error("empty que");
+            throw new Error("que Empty");
         }
         return this.data.pop();
     }

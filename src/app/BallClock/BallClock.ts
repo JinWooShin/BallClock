@@ -7,56 +7,39 @@ export class BallClock {
     fminQue: ClockQue;
     hourQue: ClockQue;
     days: number;
-
+    balls: number; 
     constructor() {
-        this.init();
     }
 
-    init() {
+    init(balls: number) {
         this.days = 0;
-        // this.initial_que = [];
         this.minQue = new ClockQue(4);
         this.fminQue = new ClockQue(11);
         this.hourQue = new ClockQue(11);
-    }
-
-    cycleDays(balls:number) {
-        this.init();
-        this.fillGlobalQue(balls);
-        this.runBall(balls);
-        return this.days;
-    }
-
-    clockState(balls:number, mins:number) {
-        this.init();
-
-        this.fillGlobalQue(balls);
-        this.runBall(balls, mins);
-        this.displayState();
+        this.balls = balls;
+        this.fillGlobalQue();
     }
 
     getDays() {
-        return this.days;
+        return {days: this.days, balls: this.balls};
     }
 
-    displayState() {
+    getCurrentState() {
         var data = {
             Min: this.minQue.data,
             FiveMin: this.fminQue.data,
             Hour: this.hourQue.data,
             Main: this.GLOBAL_QUE.data
         }
-        return JSON.stringify(data);
+        return data;
     }
 
-    private fillGlobalQue(balls:number) {
-        this.GLOBAL_QUE = new ClockQue(balls);
-        for (var i=1; i<balls+1; i++) {
-            this.GLOBAL_QUE.que(i);
+    runBall(balls:number, min?:number) {
+        if ( 27 > balls || 127 < balls ) {
+            throw new Error ('Number of balls should be 27 ~ 127.');
         }
-    }
+        this.init(balls);
 
-    private runBall(balls, min?:number) {
         var ball;
         do {
             if (min && this.getMins()>=min) {
@@ -83,6 +66,13 @@ export class BallClock {
         } while (!this.GLOBAL_QUE.isInitialOrder());
     }
 
+    private fillGlobalQue() {
+        this.GLOBAL_QUE = new ClockQue(this.balls);
+        for (var i=1; i<this.balls+1; i++) {
+            this.GLOBAL_QUE.que(i);
+        }
+    }
+    
     private getMins() {
         var mins = this.minQue.length() + this.fminQue.length()*5 + this.hourQue.length()*60 + this.days*12*60;
         return mins;

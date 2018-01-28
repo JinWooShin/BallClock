@@ -2,13 +2,13 @@
   <h2>Cycle Days</h2>
   <div>
     <label>Number of Balls:
-      <input [(ngModel)]="clock.nBall" placeholder=0>
+      <input [(ngModel)]="clock.nBall" type="number" placeholder="27">
     </label>
     <button (click)="cycleCompute()">Run</button>
   </div>
   <div class="result">
     <div *ngIf="cycle.days">
-      <span>{{clock.nBall}} balls cycle after {{cycle.days}} days.</span>
+      <span>{{cycle.balls}} balls cycle after {{cycle.days}} days.</span>
       <span>Completed in {{cycle.time}} milliseconds ({{cycle.time/1000}} seconds)</span>
   </div>
   </div>
@@ -17,14 +17,16 @@
   <h2>Clock Sate</h2>
   <div>
     <label>Number of Balls:
-      <input [(ngModel)]="clock.nBall2" placeholder=0>
+      <input id="nBallCycle" [(ngModel)]="clock.nBall2" type="number" placeholder="27">
     </label>
     <label>Number of Minutes:
-      <input [(ngModel)]="clock.mins" placeholder=0>
+      <input [(ngModel)]="clock.mins" type="number" placeholder="0">
     </label>
     <button (click)="stateCompute()">Run</button>
   </div>
   <div class="result" >
-    {{state}}
+    <div *ngIf="state.Min">
+      {{state}}
+    </div>
   </div>
 </div>
