@@ -1,5 +1,13 @@
 .result {
     border: 1px solid gray;
-    width: 500px;
-    height: 200px;
+    min-height: 200px;
+    padding: 16px;
+    margin: 12px;
+}
+
+.control {
+    margin-top: 16px;
+}
+.result {
+    margin-bottom: 24px;
 }

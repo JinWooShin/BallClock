@@ -22,22 +22,32 @@ export class BallClockComponent implements OnInit {
   }
 
   cycleCompute() {
-    var start = new Date().getTime();
-    this.ballClock.runBall(this.clock.nBall);
-    var end = new Date().getTime();
+    if (this.checkValidBall(this.clock.nBall)) {
+      var start = new Date().getTime();
+      this.ballClock.runBall(this.clock.nBall);
+      var end = new Date().getTime();
 
-    var result = this.ballClock.getDays();
-    this.cycle = {
-      days: Math.floor(result.days/2), 
-      time: end - start,
-      balls: result.balls
-    };
+      var result = this.ballClock.getDays();
+      this.cycle = {
+        days: Math.floor(result.days/2), 
+        time: end - start,
+        balls: result.balls
+      };
+    } else {
+      this.cycle = {};
+      alert("Invalid number of balls. \nNumber of ball should be 27~127");
+    }
   }
 
   stateCompute() {
+    if (this.checkValidBall(this.clock.nBall2)) {
     this.ballClock.runBall(this.clock.nBall2, this.clock.mins);
 
     this.state = this.ballClock.getCurrentState();
+    } else {
+      this.state = {};
+      alert("Invalid number of balls. \nNumber of ball should be 27~127");
+    }
   }
 
   checkValidBall(ball:number) {

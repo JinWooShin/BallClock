@@ -1,44 +1,48 @@
 <div class="container">
   <h2>Cycle Days</h2>
-  <div class="row">
-    <div class="col-sm-10 col-xs-12">
+  <div class="row control">
+    <div class="col-sm-11 col-xs-12">
       <label>Number of Balls:
         <input [(ngModel)]="clock.nBall" type="number" placeholder="27">
       </label>
     </div>
-    <div class="col-sm-2 col-xs-12">
+    <div class="col-sm-1 col-xs-12">
       <button  type="button" class="btn btn-primary" (click)="cycleCompute()">Run</button>
     </div>
   </div>
-  <div class="result">
-    <div *ngIf="cycle.days">
-      <div>{{cycle.balls}} balls cycle after {{cycle.days}} days.</div>
-      <div>Completed in {{cycle.time}} milliseconds ({{cycle.time/1000}} seconds)</div>
+  <div class="row result">
+    <div class="col-sm-12 col-xs-12">
+      <span *ngIf="cycle.days">
+        {{cycle.balls}} balls cycle after {{cycle.days}} days. <br>
+        Completed in {{cycle.time}} milliseconds ({{cycle.time/1000}} seconds)
+      </span>
     </div>
   </div>
 
   <h2>Clock Sate</h2>
-  <div class="row"> 
-    <div class="col-sm-10 col-xs-12">
+  <div class="row control"> 
+    <div class="col-sm-4 col-xs-12">
       <label>Number of Balls:
         <input id="nBallCycle" [(ngModel)]="clock.nBall2" type="number" placeholder="27">
       </label>
+    </div>
+    <div class="col-sm-7 col-xs-12">
       <label>Number of Minutes:
         <input [(ngModel)]="clock.mins" type="number" placeholder="0">
       </label>
     </div>
-    <div class="col-sm-2 col-xs-12">
+    <div class="col-sm-1 col-xs-12">
       <button type="button" class="btn btn-primary" (click)="stateCompute()">Run</button>
     </div>
   </div>
-
-
-  <div class="result" >
-    <div *ngIf="state.Min">
-      <div>Min: [{{state.Min}}] </div>
-      <div>FiveMin: [{{state.FiveMin}}] </div>
-      <div>Hour: [{{state.Hour}}] </div>
-      <div>Main: [{{state.Main}}] </div>
+  <div class="row result">
+    <div class="col-sm-12 col-xs-12">
+      <span *ngIf="state.Min">
+        Min: [{{state.Min}}] <br>
+        FiveMin: [{{state.FiveMin}}] <br>
+        Hour: [{{state.Hour}}] <br>
+        Main: [{{state.Main}}] <br>
+      </span>
     </div>
   </div>
-</div>                                                                                                                                                                                                                                                               vvvvvhhh
+</div>                                                                                                                                                                                                                                                              
